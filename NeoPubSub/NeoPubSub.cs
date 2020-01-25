@@ -31,13 +31,7 @@ namespace Neo.Plugins
 
         public override void Configure()
         {
- 
             Settings.Load(GetConfiguration());
-
-            foreach (string c in Settings.Default.WatchContracts)
-            {
-                Console.WriteLine($"Watching contract {c}");
-            }
         }
 
         public void OnPersist(Snapshot snapshot, IReadOnlyList<Blockchain.ApplicationExecuted> applicationExecutedList)
@@ -52,12 +46,8 @@ namespace Neo.Plugins
                         foreach (NotifyEventArgs q in p.Notifications)
                         {
                             string contract = q.ScriptHash.ToString();
-                            if (Array.IndexOf(Settings.Default.WatchContracts, contract) >= 0 ||
-                                Array.IndexOf(Settings.Default.WatchContracts, "*") >= 0)
-                            {
-                                string r = q.State.ToParameter().ToJson().ToString();
-                                connection.GetSubscriber().Publish(contract, $"{txid} {r}");
-                            }
+                            string r = q.State.ToParameter().ToJson().ToString();
+                            connection.GetSubscriber().Publish("events", $"{{contract:{contract}, tx:{txid}, data:{r} }}");
                         }
                     }
                 }

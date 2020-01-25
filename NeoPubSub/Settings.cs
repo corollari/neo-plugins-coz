@@ -9,7 +9,6 @@ namespace Neo.Plugins
     {
         public string RedisHost { get; }
         public string RedisPort { get; }
-        public string[] WatchContracts { get; }
 
         public static Settings Default { get; private set; }
 
@@ -17,7 +16,6 @@ namespace Neo.Plugins
         {
             this.RedisHost = section.GetSection("RedisHost").Value;
             this.RedisPort = section.GetSection("RedisPort").Value;
-            this.WatchContracts = section.GetSection("WatchContracts").GetChildren().Select(p => p.Value).ToArray();
         }
         public static void Load(IConfigurationSection section)
         {
