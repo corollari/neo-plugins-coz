@@ -47,7 +47,7 @@ namespace Neo.Plugins
                         {
                             string contract = q.ScriptHash.ToString();
                             string r = q.State.ToParameter().ToJson().ToString();
-                            connection.GetSubscriber().Publish("events", $"{{contract:{contract}, tx:{txid}, data:{r} }}");
+                            connection.GetSubscriber().Publish("events", $"{{contract:{contract}, txid:{txid}, data:{r}}}");
                         }
                     }
                 }
